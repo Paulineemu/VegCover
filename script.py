@@ -35,6 +35,9 @@ trained_model_path_species = train_yolo(path_to_data_species, mode=segment, task
 # path to raw images 
 path_to_data_images = "path_to/images" # path to the folder containing the images taking in the field
 
+# import function to predict on raw images and estimate percentage cover per species 
+from functions import predict 
+
 # predict on raw images 
 predict(path_to_data_images, path_to_model_frame=trained_model_path_frame, name_frame_class="frame", # parameter for cropping to frame
             path_to_model_species=trained_model_path_species, conf_treshold=0.1,                     # parameter for species segmenation
