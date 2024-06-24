@@ -1,33 +1,3 @@
-# function to train yolo model 
-def train_yolo(path_to_data_frame, task=detect, mode=train, im_size=640, n_epochs=50, batch_size=4, model='yolov8n.pt'):
-    """
-    Train a YOLO model with the specified parameters.
-
-    Parameters:
-    - path_to_data (str): Path to the root where the yaml and the images and labels subfolder are located.
-    - im_size (int): Image size for training. Default is 640.
-    - n_epochs (int): Number of epochs for training. Default is 50.
-    - batch_size (int): Batch size for training. Default is 4.
-    - model (str): Pretrained YOLO model version and size. Default is 'yolov8n.pt'.
-
-    Returns:
-    - path_to_model (str): Path to the trained model's best weights.
-    """
-    # YOLO training
-    !yolo task={task}
-          mode={mode}
-          model={model}
-          data="{path_to_data}/dataset.yaml"
-          epochs={n_epochs}
-          imgsz={im_size}
-          batch={batch_size}
-          project={path_to_data}
-          name="species_detector_imgsz{im_size}_modelSizeN"
-
-    # Construct the path to the trained model's best weights
-    path_to_model = f'{path_to_data_frame}/species_detector_imgsz{im_size}_modelSizeN/weights/best.pt'
-    return path_to_model
-
 # function to predict with frame detection and species segmentation model to get precentage coverage per species 
 def predict(path_to_data_images, path_to_model_frame=trained_model_path_frame, name_frame_class="frame",  # parameter for cropping to frame
             path_to_model_species=trained_model_path_species, conf_treshold=0.1,                          # parameter for species segmentation
