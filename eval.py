@@ -2,6 +2,13 @@
 ### Validate prediction with field estimations by fieldworkers ###
 ##################################################################
 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# import function to predict on raw images and estimate percentage cover per species 
+from functions import validate 
+
 validate(field_data, # (str) path to field estimations of coverage by fieldworkers
          predictions, # (str) path to predicted coverage
          image_ID_column, # (str) column which exists in both datasets (Image ID)
