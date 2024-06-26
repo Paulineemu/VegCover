@@ -1,0 +1,57 @@
+import ultralytics
+from ultralytics import YOLO
+
+###################################
+### Train frame detection model ###
+###################################
+
+# path to training data for frame detection model 
+path_to_data_frame="path_to/project_location" # path to the root where you have the yaml and the images and labels subfolder
+
+# Structure of the folder for training the model
+-root
+      -images
+              -img_1.jpeg
+              -img_2.jpeg
+              -...
+      -labels
+              -img_1.txt
+              -img_2.txt
+              -...
+      -dataset.yaml
+              -names:
+                0: class1
+                1: class2
+                ...
+              -path: /content/data/project_title
+              -train: train.txt
+              -val: val.txt
+      -train.txt
+              -./images/img_1.jpg
+      -val.txt
+              -./images/img_2.jpg
+
+# Set YOLO parameters
+IM_SIZE = 640 # Image size for training
+N_EPOCHS = 50 # Number of epochs for training
+BATCH_SIZE = 4 # Batch size for training
+MODEL = 'yolov8n.pt' # Choose pretrained YOLO model version and size
+
+# Train frame detection model
+!yolo task=detect mode=train model=$MODEL data="{path_to_data_frame}/dataset.yaml", epochs=$N_EPOCHS, imgsz=$IM_SIZE, batch=$BATCH_SIZE, project=path_to_data_frame, name="species_detector_imgsz"+str(IM_SIZE)+"_modelSizeN"
+
+# Construct the path to the trained model's best weights
+trained_model_path_frame = f'{path_to_data_frame}/species_detector_imgsz{IM_SIZE}_modelSizeN/weights/best.pt'
+
+########################################
+### Train species segmentation model ###
+########################################
+
+# path to training data for species segmentation model 
+path_to_data_species="path_to/project_location" # path to the root where you have the yaml and the images and labels subfolder
+
+# Train species segmentation model
+!yolo task=segment mode=train model=$MODEL data="{path_to_data_species}/dataset.yaml", epochs=$N_EPOCHS, imgsz=$IM_SIZE, batch=$BATCH_SIZE, project=path_to_data_species, name="species_detector_imgsz"+str(IM_SIZE)+"_modelSizeN"
+
+# Construct the path to the trained model's best weights
+trained_model_path_species = f'{path_to_data_species}/species_detector_imgsz{IM_SIZE}_modelSizeN/weights/best.pt'
