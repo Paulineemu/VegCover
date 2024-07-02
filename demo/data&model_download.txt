@@ -2,4 +2,4 @@ Download frame detection model and species segmentation model for blueberries an
 
 
 
-https://drive.google.com/drive/folders/1JIGiFG1XmEpfA3CihY-nn8bP2lDjvuZP?usp=sharing 
+https://drive.google.com/drive/folders/1JIGiFG1XmEpfA3CihY-nn8bP2lDjvuZP?usp=sharing
