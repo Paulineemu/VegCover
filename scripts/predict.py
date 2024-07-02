@@ -21,7 +21,7 @@ path_to_data_images = "path_to/images" # path to the folder containing the photo
 # predict on raw images 
 predict(path_to_data_images, path_to_model_frame=trained_model_path_frame, name_frame_class="frame", # parameter for cropping to frame
             path_to_model_species=trained_model_path_species, conf_treshold=0.08,                     # parameter for species segmentation
-            number_of_classes=2):                                                                    # parameter for calculating percentage cover
+            number_of_classes=2)                                                                    # parameter for calculating percentage cover
 
  """
     Predict with YOLO models with the specified parameters:
