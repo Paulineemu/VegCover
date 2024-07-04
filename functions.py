@@ -100,6 +100,11 @@ def predict(path_to_data_images, path_to_model_frame=trained_model_path_frame, n
                 class_id = intensity_to_class.get(target_class, "mixed class")
                 class_pixel_shares[f'Class_{class_id}'] = pixel_share
 
+            # If no species detected, add NaN or zero values
+            if not class_pixel_shares:
+                for class_id in range(number_of_classes):
+                    class_pixel_shares[f'Class_{class_id}'] = 0
+
             results.append(class_pixel_shares)
 
     results_df = pd.DataFrame(results)
