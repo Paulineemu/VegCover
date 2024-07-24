@@ -4,4 +4,4 @@ os
 pandas 
 shutil
 random
-ultralytics
+ultralytics ==8.2.52
