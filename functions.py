@@ -3,9 +3,8 @@
 ######################################################################################################################
 
 def predict(path_to_data_images, path_to_model_frame=trained_model_path_frame, name_frame_class="frame",  # parameter for cropping to frame
-            path_to_model_species=trained_model_path_species, conf_treshold=0.08,                          # parameter for species segmentation
+            path_to_model_species=trained_model_path_species, conf_treshold=0.1,                         # parameter for species segmentation
             number_of_classes=2):                                                                         # parameter for calculating percentage cover
-
     """
     Predict with YOLO models with the specified parameters:
 
@@ -22,7 +21,6 @@ def predict(path_to_data_images, path_to_model_frame=trained_model_path_frame, n
     - number_of_classes (int): Total number of classes in species segmentation model. Default is 2.
 
     """
-
     """ Crop original images """
 
     model_frame = YOLO(path_to_model_frame)
@@ -30,27 +28,25 @@ def predict(path_to_data_images, path_to_model_frame=trained_model_path_frame, n
                 save=True,
                 project=path_to_data_images,
                 name="temp_cropped_images",
-                max_det=1,
-                save_crop=True)
+                max_det=1, # Maximal detection (max_det) is set to 1 because we want to predict only one frame per image. The detected frame with the highest confidence value gets choosen.
+                save_crop=True)  # Saving the crop (save_crop) is set to True as we are going to use these image for further training for the species segmentation model.
 
     cropped_images_path = os.path.join(path_to_data_images, "temp_cropped_images", "crops", name_frame_class)
 
     """ Species segmentation on cropped images """
-
     model_species = YOLO(path_to_model_species)
     model_species(cropped_images_path,
                   conf=conf_treshold,
-                  #agnostic_nms = True,
                   save=True,
                   save_txt=True,
                   project=path_to_data_images,
-                  name="temp_species_segmentation")
+                  name="temp_species_segmentation",
+                  save_conf=True)
 
     predicted_images_path = os.path.join(path_to_data_images, "temp_species_segmentation")
     predicted_images_path_labels = os.path.join(predicted_images_path, "labels")
 
     """ Create grayscale images """
-
     class_intensity_mapping = {}
     used_grayscale_values = set()
 
@@ -65,51 +61,54 @@ def predict(path_to_data_images, path_to_model_frame=trained_model_path_frame, n
 
     results = []
 
-    for image_filename in os.listdir(predicted_images_path):
-        if image_filename.endswith(".jpg"):
-            image_path = os.path.join(predicted_images_path, image_filename)
-            label_filename = os.path.splitext(image_filename)[0] + ".txt"
-            label_path = os.path.join(predicted_images_path_labels, label_filename)
+    results_folder = os.path.join(path_to_data_images, "Results") 
+    os.makedirs(results_folder, exist_ok=True)  
 
-            image = cv2.imread(image_path)
-            height, width, _ = image.shape
-            accumulated_mask = np.zeros((height, width), dtype=np.uint8)
+    # Collect all image filenames
+    image_filenames = [f for f in os.listdir(predicted_images_path) if f.endswith(".jpg")]
 
+    for image_filename in image_filenames:
+        image_path = os.path.join(predicted_images_path, image_filename)
+        label_filename = os.path.splitext(image_filename)[0] + ".txt"
+        label_path = os.path.join(predicted_images_path_labels, label_filename)
+
+        image = cv2.imread(image_path)
+        height, width, _ = image.shape
+        resolved_mask = np.zeros((height, width), dtype=np.uint8)
+        confidence_map = np.zeros((height, width), dtype=np.float32)
+
+        if os.path.exists(label_path):
             with open(label_path, "r") as file:
                 for line in file:
-                    class_number = int(line[0])
-                    object_info = line.split()[1:]
-                    object_info = list(map(float, object_info))
-                    coordinates_pairs = np.array(object_info).reshape(-1, 2)
+                    parts = line.split()
+                    class_number = int(parts[0])
+                    confidence = float(parts[-1])  # Fetch confidence from the last element
+                    coordinates_pairs = np.array(parts[1:-1], dtype=float).reshape(-1, 2)  # Extract coordinates excluding class and confidence
                     coordinates_pairs[:, 0] *= width
                     coordinates_pairs[:, 1] *= height
                     intensity = class_intensity_mapping.get(class_number, 0)
                     mask = np.zeros((height, width), dtype=np.uint8)
-                    cv2.fillPoly(mask, [coordinates_pairs.astype(int)], intensity)
-                    accumulated_mask = cv2.bitwise_or(accumulated_mask, mask)
+                    cv2.fillPoly(mask, [coordinates_pairs.astype(int)], 1)  # Pixels inside the object's polygon are set to 1
 
-            total_pixels = accumulated_mask.size
-            unique_classes = np.unique(accumulated_mask)
-            class_pixel_shares = {'Image': image_filename}
+                    # Update resolved_mask and confidence_map
+                    update_mask = (mask == 1) & (confidence > confidence_map)
+                    resolved_mask[update_mask] = intensity
+                    confidence_map[update_mask] = confidence
 
-            for target_class in unique_classes:
-                if target_class == 0:
-                    continue
-                class_pixels = np.sum(accumulated_mask == target_class)
-                pixel_share = (class_pixels / total_pixels) * 100
-                class_id = intensity_to_class.get(target_class, "mixed class")
-                class_pixel_shares[f'Class_{class_id}'] = pixel_share
+        # Calculate pixel shares for visualization or further processing
+        total_pixels = resolved_mask.size
+        unique_classes = np.unique(resolved_mask)
+        class_pixel_shares = {'Image': image_filename}
 
-            # If no species detected, add NaN or zero values
-            if not class_pixel_shares:
-                for class_id in range(number_of_classes):
-                    class_pixel_shares[f'Class_{class_id}'] = 0
+        for class_id in range(number_of_classes):
+            class_pixels = np.sum(resolved_mask == class_intensity_mapping.get(class_id, 0))
+            pixel_share = (class_pixels / total_pixels) * 100 if total_pixels > 0 else 0
+            class_pixel_shares[f'Class_{class_id}'] = pixel_share
 
-            results.append(class_pixel_shares)
+        results.append(class_pixel_shares)
 
+    # Save results to CSV
     results_df = pd.DataFrame(results)
-    results_folder = os.path.join(path_to_data_images, "Results")
-    os.makedirs(results_folder, exist_ok=True)
     results_file_path = os.path.join(results_folder, 'results.csv')
     results_df.to_csv(results_file_path, index=False)
 
