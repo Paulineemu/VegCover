@@ -9,7 +9,7 @@ import shutil
 import random
 
 # import function to predict on raw images and estimate percentage cover per species 
-from functions import predict 
+from functions import predict_cover
 
 ###############################################
 ### Predict percentage coverage per species ###
@@ -19,7 +19,7 @@ from functions import predict
 path_to_data_images = "path_to/images" # path to the folder containing the photos taken in the field
 
 # predict on raw images 
-predict(path_to_data_images, path_to_model_frame=trained_model_path_frame, name_frame_class="frame", # parameter for cropping to frame
+predict_cover(path_to_data_images, path_to_model_frame=trained_model_path_frame, name_frame_class="frame", # parameter for cropping to frame
             path_to_model_species=trained_model_path_species, conf_treshold=0.10,                     # parameter for species segmentation
             number_of_classes=2)                                                                    # parameter for calculating percentage cover
 
