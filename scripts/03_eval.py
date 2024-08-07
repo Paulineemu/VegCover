@@ -7,7 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # import function to predict on raw images and estimate percentage cover per species 
-from functions import validate 
+from functions import validate_cover
 
 validate(field_data, # (str) path to field estimations of coverage by fieldworkers
          predictions, # (str) path to predicted coverage
