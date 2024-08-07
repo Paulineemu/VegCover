@@ -2,7 +2,7 @@
 ### function to predict with frame detection and species segmentation model to get percentage coverage per species ###
 ######################################################################################################################
 
-def predict(path_to_data_images, path_to_model_frame=trained_model_path_frame, name_frame_class="frame",  # parameter for cropping to frame
+def predict_cover(path_to_data_images, path_to_model_frame=trained_model_path_frame, name_frame_class="frame",  # parameter for cropping to frame
             path_to_model_species=trained_model_path_species, conf_treshold=0.1,                         # parameter for species segmentation
             number_of_classes=2):                                                                         # parameter for calculating percentage cover
     """
@@ -122,7 +122,7 @@ def predict(path_to_data_images, path_to_model_frame=trained_model_path_frame, n
 ### Evaluate predictions with field data ###
 ############################################
 
-def validate(field_data, # (str) path to field estimations of coverage by fieldworkers
+def validate_cover(field_data, # (str) path to field estimations of coverage by fieldworkers
              predictions, # (str) path to predicted coverage
              image_ID_column, # (str) column which exists in both datasets (Image ID)
              classes_to_include, # (lst) column names of classes to include in the validation (must be the same in field and prediction dataset)
