@@ -2,8 +2,8 @@
 ### function to predict with frame detection and species segmentation model to get percentage coverage per species ###
 ######################################################################################################################
 
-def predict_cover(path_to_data_images, path_to_model_frame=trained_model_path_frame, name_frame_class="frame",  # parameter for cropping to frame
-            path_to_model_species=trained_model_path_species, conf_treshold=0.1,                         # parameter for species segmentation
+def predict_cover(path_to_data_images, path_to_model_frame=trained_model_path_frame, name_frame_class="frame", img_size_frame = 640,  # parameter for cropping to frame
+            path_to_model_species=trained_model_path_species, conf_treshold=0.1, img_size_species = 1024,                       # parameter for species segmentation
             number_of_classes=2):                                                                         # parameter for calculating percentage cover
     """
     Predict with YOLO models with the specified parameters:
@@ -29,8 +29,9 @@ def predict_cover(path_to_data_images, path_to_model_frame=trained_model_path_fr
                 project=path_to_data_images,
                 name="temp_cropped_images",
                 max_det=1, # Maximal detection (max_det) is set to 1 because we want to predict only one frame per image. The detected frame with the highest confidence value gets choosen.
-                save_crop=True)  # Saving the crop (save_crop) is set to True as we are going to use these image for further training for the species segmentation model.
-
+                save_crop=True,  # Saving the crop (save_crop) is set to True as we are going to use these image for further training for the species segmentation model.
+                imgsz = img_size_frame)
+                        
     cropped_images_path = os.path.join(path_to_data_images, "temp_cropped_images", "crops", name_frame_class)
 
     """ Species segmentation on cropped images """
@@ -41,7 +42,8 @@ def predict_cover(path_to_data_images, path_to_model_frame=trained_model_path_fr
                   save_txt=True,
                   project=path_to_data_images,
                   name="temp_species_segmentation",
-                  save_conf=True)
+                  save_conf=True,
+                  imgsz = img_size_species)
 
     predicted_images_path = os.path.join(path_to_data_images, "temp_species_segmentation")
     predicted_images_path_labels = os.path.join(predicted_images_path, "labels")
