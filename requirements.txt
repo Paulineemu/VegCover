@@ -1,7 +1,3 @@
-cv2
 numpy 
-os
 pandas 
-shutil
-random
 ultralytics ==8.2.52
