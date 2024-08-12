@@ -2,6 +2,8 @@
 This repo includes a script to train a YOLO frame detection model and a YOLO species segmentation model based on labelled ground-level imagery. 
 Additionally, the script includes a function to use these two models to estimate the percentage coverage per species. 
 
+The code has been tested on a Windows machine and Python 3.10
+
 ![image](https://github.com/user-attachments/assets/95afb424-5b7e-4cdf-9b55-7b38a8614afd)
 
 
