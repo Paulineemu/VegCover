@@ -42,13 +42,20 @@ git clone https://github.com/Paulineemu/DeepField-Deep-Learning-for-Ground-Level
 cd DeepField-Deep-Learning-for-Ground-Level-Vegetation-Monitoring
 
 # create new environment
-conda env create -f DeepField.yaml
+conda env create -n deepField python=3.10
 
 # activate the created environment
-conda activate DeepField
+conda activate deepField
 
 # install requirements
 pip install -r requirements.txt
 ```
+
+if you want to run the demo notebook, we suggest installing also Jupyter-lab
+```
+pip install jupyter-lab
+```
+
+
 
 
