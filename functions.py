@@ -2,9 +2,7 @@
 ### function to predict with frame detection and species segmentation model to get percentage coverage per species ###
 ######################################################################################################################
 
-def predict_cover(path_to_data_images, path_to_model_frame=trained_model_path_frame, name_frame_class="frame", img_size_frame = 640,  # parameter for cropping to frame
-            path_to_model_species=trained_model_path_species, conf_treshold=0.1, img_size_species = 1024,                       # parameter for species segmentation
-            number_of_classes=2):                                                                         # parameter for calculating percentage cover
+def predict_cover(path_to_data_images, path_to_model_frame, path_to_model_species, name_frame_class="frame", img_size_frame = 640, conf_treshold=0.1, img_size_species = 1024, number_of_classes=2):                                                                        
     """
     Predict with YOLO models with the specified parameters:
 
