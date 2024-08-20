@@ -4,9 +4,7 @@ Additionally, the script includes a function to use these two models to estimate
 
 The code has been tested on a Windows machine and Python 3.10. 
 
-
-![Figure1_new](https://github.com/user-attachments/assets/b1288b93-58b9-42f2-a0df-f14faa592346)
-
+![Figure1_new](https://github.com/user-attachments/assets/647843f8-7b76-4c51-8ca5-764984b02264)
 
 
 ## **Label ground-level images**
