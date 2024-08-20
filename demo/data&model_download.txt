@@ -1,5 +1,0 @@
-Download frame detection model and species segmentation model for blueberries and lingonberries as well as ground-level imagery to predict on: 
-
-
-
-https://drive.google.com/drive/folders/1JIGiFG1XmEpfA3CihY-nn8bP2lDjvuZP?usp=sharing
