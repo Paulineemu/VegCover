@@ -55,7 +55,3 @@ pip install jupyterlab
 # open demo.ipynb
 jupyter-lab
 ```
-
-
-
-
