@@ -1,7 +1,7 @@
 task: detect
 mode: train
 model: yolov8n.pt
-data: datasets/Frame_data/dataset_demo.yaml
+data: ./data/ground_veg_inner_bboxes/dataset.yaml
 epochs: 50
 time: null
 patience: 100
@@ -12,8 +12,8 @@ save_period: -1
 cache: false
 device: null
 workers: 8
-project: Models
-name: Frame_detection_model
+project: null
+name: train2
 exist_ok: false
 pretrained: true
 optimizer: auto
@@ -94,7 +94,6 @@ shear: 0.0
 perspective: 0.0
 flipud: 0.0
 fliplr: 0.5
-bgr: 0.0
 mosaic: 1.0
 mixup: 0.0
 copy_paste: 0.0
@@ -103,4 +102,4 @@ erasing: 0.4
 crop_fraction: 1.0
 cfg: null
 tracker: botsort.yaml
-save_dir: Models\Frame_detection_model
+save_dir: runs/detect/train2
