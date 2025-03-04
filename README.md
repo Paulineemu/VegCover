@@ -7,7 +7,7 @@ It includes:
 
 ✅ Method to parse instance segmentation masks to species-specific coverage estimates in images.
 
-✅ The data used to train and evaluate the models
+✅ The data used to train and evaluate the models. The full datasets can be downloaded in this Zenodo repository https://zenodo.org/records/13361905
 
 ![Figure1_new](https://github.com/user-attachments/assets/647843f8-7b76-4c51-8ca5-764984b02264)
 
