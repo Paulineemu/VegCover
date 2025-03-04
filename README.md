@@ -1,55 +1,64 @@
-# Species Identification and Coverage Estimation from Ground-level Imagery for Vegetation Monitoring 
-This repo includes a script to train a YOLO frame object detection model and a YOLO species instance segmentation model based on labelled ground-level imagery. 
-Additionally, the script includes a function to use these two models to estimate the percentage coverage per species. 
+# 🌿 Species Identification and Coverage Estimation from Ground-level Imagery for Vegetation Monitoring 📷
+This repository contains the data and code used in __Müller, Puliti, and Breidenbach (2025)__ to train and apply deep learning models for __species coverage estimation__ using ground-level imagery.
 
-The code has been tested on a Windows machine and Python 3.10. 
+It includes: 
+
+✅ A YOLOv8 object detection model for detecting frames in images and one species instance segmentation model for species identification and identifying and segmenting species.
+
+✅ Method to parse instance segmentation masks to species-specific coverage estimates in images.
+
+✅ The data used to train and evaluate the models
 
 ![Figure1_new](https://github.com/user-attachments/assets/647843f8-7b76-4c51-8ca5-764984b02264)
 
 
-## **Label ground-level images**
-- This can for example be done on TrainYOLO.com
-- YOLO project folder must have specific contents
-  - root
-    - train
-        - img_1.jpeg
-        - img_2.jpeg
-        - labels_img_1.txt
-        - labels_img_2.txt
-    - val
-        - img_3.jpeg
-        - img_4.jpeg
-        - labels_img_3.txt
-        - labels_img_4.txt
-    - dataset.yaml
-        - names:
-          - 0: Species 1
-          - 1: Species 2
-        - path: C:\Users\Anonym\VegCover\datasets\Frame_data
-        - train: train
-        - val: val
+# 👩‍🚀 Workflow Overview
+This demo provides a step-by-step approach for training and applying the models:
+
+1️⃣ __Training:__
+- Train two models using labeled images:
+  -   __Frame Object Detection__ (dataset: Frame_data)
+  -   __Species Instance Segmentation__ (dataset: Species_segmentation_data)
+ 
+2️⃣ __Confidence Optimization:__
+- Optimize the confidence threshold based on downstream __cover estimation__ performance.
+
+3️⃣ __Inference:__
+- Predict on test images (Species_cover_data_test).
+
+4️⃣ __Evaluation:__
+- Compare predictions with field estimates (Field_data_NFI).
 
 
-## **How to use the demo**
-To open the demo.ipynb follow these steps:
+📌 The code has been tested on a Windows machine and Python 3.10. 
+
+# 🔧 How to Run the DemoHow to Run the Demo
+Follow these steps to set up and run demo.ipynb:
 
 ```
-# clone repo
-git clone https://github.com/Paulineemu/VegCover.git
-cd VegCover
-
-# create new environment
+# Create a new environment
 conda create -n VegCover python=3.10
 
-# activate the created environment
+# Activate the environment
 conda activate VegCover
 
-# install requirements
+# Install dependencies
 pip install -r requirements.txt
 
-# install jupyter-lab
+# Install Jupyter Lab
 pip install jupyterlab
 
-# open demo.ipynb
+# Open the demo notebook
 jupyter-lab
+
 ```
+
+# 📖 How to cite
+
+If you use this work, please cite:
+
+__Müller, P., Puliti, S., & Breidenbach, J. (2025).__ Towards Enhancing Field-Based Vegetation Monitoring: A Deep Learning Approach for Species Coverage Estimation from Ground-Level Imagery. _Methods in Ecology and Evolution._
+
+
+
+
