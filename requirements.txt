@@ -1,3 +1,0 @@
-numpy 
-pandas 
-ultralytics ==8.2.52
