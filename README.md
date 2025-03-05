@@ -32,7 +32,7 @@ This demo provides a step-by-step approach for training and applying the models:
 
 📌 The code has been tested on a Windows machine and Python 3.10. 
 
-# 🔧 How to Run the DemoHow to Run the Demo
+# 🔧 How to Run the Demo
 Follow these steps to set up and run demo.ipynb:
 
 ```
