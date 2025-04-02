@@ -1,5 +1,5 @@
 # 🌿 Species Identification and Coverage Estimation from Ground-level Imagery for Vegetation Monitoring 📷
-This repository contains the data and code used in __[Müller, Puliti, and Breidenbach (2025)](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.70024)__ to train and apply deep learning models for blueberry🍇 and lingonberry 🍒 __coverage estimation__ using ground-level imagery.
+This repository contains the data and code used in __[Müller, Puliti, and Breidenbach (2025)](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.70024)__ to train and apply deep learning models for blueberry🍇 and lingonberry 🍒 __coverage estimation__ using ground-level smartphone 🖼️
 
 It includes: 
 
